@@ -2216,11 +2216,11 @@ function createDocxReport({
 function createDocxProjectInformationBlocks(projectInfo: ProjectInfo, pvModule: PvModule | null) {
   const blocks: Array<Paragraph | Table> = [
     createDocxProjectCoverTable(projectInfo),
-    createDocxFrontMatterSpacer(360),
+    createDocxFrontMatterSpacer(240),
     createDocxProjectPartiesTable(projectInfo),
-    createDocxFrontMatterSpacer(430),
+    createDocxFrontMatterSpacer(300),
     createDocxMeasurementTitleTable(projectInfo, pvModule),
-    createDocxFrontMatterSpacer(360),
+    createDocxFrontMatterSpacer(240),
     createDocxApprovalCaption(),
     createDocxProjectApprovalTable(projectInfo),
     createPageBreak(),
@@ -2450,15 +2450,15 @@ function createDocxProjectCoverTable(projectInfo: ProjectInfo) {
           createDocxCoverSignoffCell('Date', 'Prepared by', formatEngineerLabel(projectInfo.preparedBy), leftWidth),
           createDocxCoverTitleCell(projectInfo, rightWidth),
         ],
-        { height: 700 },
+        { height: 620 },
       ),
       createDocxTableRow(
         [createDocxCoverSignoffCell('Date', 'Check by', formatEngineerLabel(projectInfo.checkedBy), leftWidth)],
-        { height: 700 },
+        { height: 620 },
       ),
       createDocxTableRow(
         [createDocxCoverSignoffCell('Date', 'Approved by', formatEngineerLabel(projectInfo.approvedBy), leftWidth)],
-        { height: 700 },
+        { height: 620 },
       ),
     ],
   })
@@ -2484,7 +2484,7 @@ function createDocxProjectPartiesTable(projectInfo: ProjectInfo) {
           createFrontMatterCell(label, { width: labelWidth, size: 22 }),
           createFrontMatterCell(value, { width: valueWidth, size: 22 }),
         ],
-        { height: 560 },
+        { height: 500 },
       ),
     ),
   })
@@ -2507,7 +2507,7 @@ function createDocxMeasurementTitleTable(projectInfo: ProjectInfo, pvModule: PvM
             width: DOCX_BODY_WIDTH_DXA,
           }),
         ],
-        { height: 640 },
+        { height: 560 },
       ),
       createDocxTableRow(
         [
@@ -2519,7 +2519,7 @@ function createDocxMeasurementTitleTable(projectInfo: ProjectInfo, pvModule: PvM
             width: DOCX_BODY_WIDTH_DXA,
           }),
         ],
-        { height: 540 },
+        { height: 460 },
       ),
     ],
   })
@@ -2540,14 +2540,14 @@ function createDocxProjectApprovalTable(projectInfo: ProjectInfo) {
           createDocxSignatureCell('OWNER:', projectInfo.ownerApproval, halfWidth),
           createDocxSignatureCell('CONSULTANT (Owner Engineer):', projectInfo.consultantApproval, DOCX_BODY_WIDTH_DXA - halfWidth),
         ],
-        { height: 3000 },
+        { height: 2250 },
       ),
       createDocxTableRow(
         [
           createDocxSignatureCell('CONTRACTOR EPC:', projectInfo.contractorEpcApproval, halfWidth),
           createDocxSignatureCell('TESTER:', projectInfo.testerApproval, DOCX_BODY_WIDTH_DXA - halfWidth),
         ],
-        { height: 3000 },
+        { height: 2250 },
       ),
     ],
   })

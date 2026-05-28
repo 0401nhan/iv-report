@@ -2558,12 +2558,105 @@ const smallButtonClass =
 
 const compactToolButtonClass = (isActive: boolean) =>
   [
-    'grid h-7 w-7 place-items-center rounded border text-[13px] font-semibold shadow-sm transition disabled:cursor-not-allowed disabled:opacity-40',
+    'grid h-7 w-7 place-items-center rounded border shadow-sm transition disabled:cursor-not-allowed disabled:opacity-40',
     isActive ? 'border-blue-500 bg-blue-50 text-blue-950' : 'border-slate-200 bg-white text-slate-700 hover:border-blue-300 hover:bg-blue-50',
   ].join(' ')
 
 const dangerButtonClass =
   'h-9 rounded-md border border-red-200 bg-white px-3 text-sm font-semibold text-red-700 shadow-sm transition hover:border-red-300 hover:bg-red-50'
+
+type ToolIconName = 'clear' | 'move' | 'polygon' | 'rectangle' | 'trash' | 'undo' | 'upload' | 'width'
+
+function ToolIcon({ name }: { name: ToolIconName }) {
+  const commonProps = {
+    'aria-hidden': true,
+    className: 'h-4 w-4',
+    fill: 'none',
+    stroke: 'currentColor',
+    strokeLinecap: 'round' as const,
+    strokeLinejoin: 'round' as const,
+    strokeWidth: 2,
+    viewBox: '0 0 24 24',
+  }
+
+  if (name === 'upload') {
+    return (
+      <svg {...commonProps}>
+        <path d="M12 15V3" />
+        <path d="m7 8 5-5 5 5" />
+        <path d="M5 21h14" />
+      </svg>
+    )
+  }
+
+  if (name === 'clear') {
+    return (
+      <svg {...commonProps}>
+        <path d="M18 6 6 18" />
+        <path d="m6 6 12 12" />
+      </svg>
+    )
+  }
+
+  if (name === 'move') {
+    return (
+      <svg {...commonProps}>
+        <path d="M12 3v18" />
+        <path d="M3 12h18" />
+        <path d="m8 7 4-4 4 4" />
+        <path d="m8 17 4 4 4-4" />
+        <path d="m7 8-4 4 4 4" />
+        <path d="m17 8 4 4-4 4" />
+      </svg>
+    )
+  }
+
+  if (name === 'polygon') {
+    return (
+      <svg {...commonProps}>
+        <path d="M5 17 9 5l10 4-3 10Z" />
+        <path d="M5 17 16 19" />
+      </svg>
+    )
+  }
+
+  if (name === 'rectangle') {
+    return (
+      <svg {...commonProps}>
+        <rect height="12" rx="1.5" width="16" x="4" y="6" />
+      </svg>
+    )
+  }
+
+  if (name === 'undo') {
+    return (
+      <svg {...commonProps}>
+        <path d="m9 7-5 5 5 5" />
+        <path d="M20 18v-2a4 4 0 0 0-4-4H4" />
+      </svg>
+    )
+  }
+
+  if (name === 'trash') {
+    return (
+      <svg {...commonProps}>
+        <path d="M4 7h16" />
+        <path d="M10 11v6" />
+        <path d="M14 11v6" />
+        <path d="M6 7l1 14h10l1-14" />
+        <path d="M9 7V4h6v3" />
+      </svg>
+    )
+  }
+
+  return (
+    <svg {...commonProps}>
+      <path d="M5 7h14" />
+      <path d="M5 12h14" strokeWidth={3} />
+      <path d="M5 18h14" strokeWidth={4} />
+    </svg>
+  )
+}
 
 function LevelSelector({ label, value, options, onChange }: LevelSelectorProps) {
   return (
@@ -3357,7 +3450,7 @@ function MeasurementReport({ imageSlots, onImageSlotChange, record, pvModule, to
             chart={ivChart}
             compact
             strokeClassName="stroke-sky-700"
-            title="I V Curve"
+            title="I-V Curve"
             yAxisLabel="A"
           />
           <CurveChart
@@ -3365,7 +3458,7 @@ function MeasurementReport({ imageSlots, onImageSlotChange, record, pvModule, to
             chart={powerChart}
             compact
             strokeClassName="stroke-amber-600"
-            title="P V Curve"
+            title="P-V Curve"
             yAxisLabel="W"
           />
         </div>
@@ -3568,7 +3661,7 @@ function RecordImageSlotEditor({ label, onChange, slot }: RecordImageSlotEditorP
             aria-label="Upload image"
             onClick={() => fileInputRef.current?.click()}
           >
-            +
+            <ToolIcon name="upload" />
           </button>
           <button
             className={compactToolButtonClass(false)}
@@ -3578,7 +3671,7 @@ function RecordImageSlotEditor({ label, onChange, slot }: RecordImageSlotEditorP
             disabled={!slot}
             onClick={() => onChange(null)}
           >
-            x
+            <ToolIcon name="clear" />
           </button>
         </div>
       </div>
@@ -3652,7 +3745,7 @@ function RecordImageSlotEditor({ label, onChange, slot }: RecordImageSlotEditorP
             disabled={!slot}
             onClick={() => setIsMoveEnabled((value) => !value)}
           >
-            M
+            <ToolIcon name="move" />
           </button>
           <button
             className={compactToolButtonClass(drawMode === 'polygon')}
@@ -3662,7 +3755,7 @@ function RecordImageSlotEditor({ label, onChange, slot }: RecordImageSlotEditorP
             disabled={!slot}
             onClick={() => setDrawMode('polygon')}
           >
-            P
+            <ToolIcon name="polygon" />
           </button>
           <button
             className={compactToolButtonClass(drawMode === 'rectangle')}
@@ -3672,7 +3765,7 @@ function RecordImageSlotEditor({ label, onChange, slot }: RecordImageSlotEditorP
             disabled={!slot}
             onClick={() => setDrawMode('rectangle')}
           >
-            R
+            <ToolIcon name="rectangle" />
           </button>
           <label
             className="grid h-7 w-9 place-items-center rounded border border-slate-200 bg-white shadow-sm"
@@ -3686,22 +3779,29 @@ function RecordImageSlotEditor({ label, onChange, slot }: RecordImageSlotEditorP
               onChange={(event) => setShapeColor(normalizeRecordImageColor(event.currentTarget.value))}
             />
           </label>
-          <button
-            className={compactToolButtonClass(false)}
-            type="button"
+          <label
+            className="flex h-7 items-center gap-1 rounded border border-slate-200 bg-white px-1.5 text-slate-700 shadow-sm"
             title={slot ? `Outline width: ${normalizeRecordImageStrokeWidth(slot.strokeWidth)}` : 'Outline width'}
             aria-label="Outline width"
-            disabled={!slot}
-            onClick={() =>
-              slot &&
-              onChange({
-                ...slot,
-                strokeWidth: getNextRecordImageStrokeWidth(slot.strokeWidth),
-              })
-            }
           >
-            W
-          </button>
+            <ToolIcon name="width" />
+            <input
+              className="h-1.5 w-20 accent-blue-600 disabled:cursor-not-allowed disabled:opacity-40"
+              type="range"
+              min={recordImageMinStrokeWidth}
+              max={recordImageMaxStrokeWidth}
+              step={0.5}
+              disabled={!slot}
+              value={slot ? normalizeRecordImageStrokeWidth(slot.strokeWidth) : 2}
+              onChange={(event) =>
+                slot &&
+                onChange({
+                  ...slot,
+                  strokeWidth: normalizeRecordImageStrokeWidth(Number(event.currentTarget.value)),
+                })
+              }
+            />
+          </label>
         </div>
         <div className="flex flex-wrap gap-2">
           <button
@@ -3712,7 +3812,7 @@ function RecordImageSlotEditor({ label, onChange, slot }: RecordImageSlotEditorP
             disabled={!slot || slot.shapes.length === 0}
             onClick={() => slot && onChange({ ...slot, polygon: [], shapes: undoRecordImageShape(slot.shapes) })}
           >
-            U
+            <ToolIcon name="undo" />
           </button>
           <button
             className={compactToolButtonClass(false)}
@@ -3722,7 +3822,7 @@ function RecordImageSlotEditor({ label, onChange, slot }: RecordImageSlotEditorP
             disabled={!slot || slot.shapes.length === 0}
             onClick={() => slot && onChange({ ...slot, polygon: [], shapes: [] })}
           >
-            C
+            <ToolIcon name="trash" />
           </button>
         </div>
       </div>
@@ -3848,14 +3948,6 @@ function normalizeRecordImageStrokeWidth(value: unknown) {
 
 function getRecordImageSvgStrokeWidth(value: unknown) {
   return normalizeRecordImageStrokeWidth(value) / 700
-}
-
-function getNextRecordImageStrokeWidth(value: unknown) {
-  const current = normalizeRecordImageStrokeWidth(value)
-  const widths = [1, 2, 3, 4, 6, 8]
-  const nextWidth = widths.find((width) => width > current)
-
-  return nextWidth ?? widths[0]
 }
 
 function getRecordImageFrame(slot: RecordImageSlot) {
@@ -4368,12 +4460,12 @@ function CurveChart({
         <div className="flex flex-wrap items-center gap-3">
           <span className="flex items-center gap-1.5 text-xs font-medium text-slate-600">
             <span className={`h-0.5 w-7 rounded-full ${measuredLegendClass}`} />
-            STC measurement
+            Measured
           </span>
           {chart.referencePoints && (
             <span className="flex items-center gap-1.5 text-xs font-medium text-slate-600">
               <span className="h-0 w-7 border-t-2 border-dashed border-green-800" />
-              Module reference
+              Reference
             </span>
           )}
         </div>

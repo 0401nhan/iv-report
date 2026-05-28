@@ -3001,13 +3001,13 @@ function createDocxChartPairTable(record: MeasurementRecord, pvModule: PvModule 
     rows: [
       createDocxTableRow(
         [
-          createReportTableCell('I V Curve', {
+          createReportTableCell('I-V Curve', {
             alignment: AlignmentType.CENTER,
             bold: true,
             fill: DOCX_REPORT_COLORS.neutral,
             width: columnWidth,
           }),
-          createReportTableCell('P V Curve', {
+          createReportTableCell('P-V Curve', {
             alignment: AlignmentType.CENTER,
             bold: true,
             fill: DOCX_REPORT_COLORS.neutral,
@@ -3034,7 +3034,7 @@ function createDocxChartCell(
   width: number,
 ) {
   const chartSvg = createCurveChartSvg(record, pvModule, yField)
-  const title = yField === 'amps' ? 'I V Curve' : 'P V Curve'
+  const title = yField === 'amps' ? 'I-V Curve' : 'P-V Curve'
 
   return new TableCell({
     borders: createDocxCellBorders(),
@@ -3054,8 +3054,8 @@ function createDocxChartCell(
                   data: TRANSPARENT_PNG,
                 },
                 transformation: {
-                  width: 430,
-                  height: 215,
+                  width: 360,
+                  height: 180,
                 },
               }),
             ],
@@ -3311,7 +3311,7 @@ function createCurveChartSvg(
   const tickCount = 5
   const strokeColor = yField === 'amps' ? '#0369a1' : '#d97706'
   const yAxisLabel = yField === 'amps' ? 'A' : 'W'
-  const title = yField === 'amps' ? 'I V Curve' : 'P V Curve'
+  const title = yField === 'amps' ? 'I-V Curve' : 'P-V Curve'
   const points = measurements
     .map((point) => {
       const x = left + (point.volts / maxVolts) * (right - left)
@@ -3346,9 +3346,9 @@ function createCurveChartSvg(
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
   <rect x="0" y="0" width="${width}" height="${height}" fill="#f8fafc"/>
   <text x="${left}" y="18" fill="#334155" font-size="14" font-weight="700" font-family="Arial">${escapeXml(title)}</text>
-  <line x1="${right - 186}" y1="14" x2="${right - 156}" y2="14" stroke="${strokeColor}" stroke-width="3" stroke-linecap="round"/>
-  <text x="${right - 148}" y="18" fill="#475569" font-size="11" font-family="Arial">STC measurement</text>
-  ${referencePoints ? `<line x1="${right - 186}" y1="30" x2="${right - 156}" y2="30" stroke="#166534" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="8 6"/><text x="${right - 148}" y="34" fill="#475569" font-size="11" font-family="Arial">Module reference</text>` : ''}
+  <line x1="${right - 126}" y1="14" x2="${right - 96}" y2="14" stroke="${strokeColor}" stroke-width="3" stroke-linecap="round"/>
+  <text x="${right - 88}" y="18" fill="#475569" font-size="11" font-family="Arial">Measured</text>
+  ${referencePoints ? `<line x1="${right - 126}" y1="30" x2="${right - 96}" y2="30" stroke="#166534" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="8 6"/><text x="${right - 88}" y="34" fill="#475569" font-size="11" font-family="Arial">Reference</text>` : ''}
   <rect x="${left}" y="${top}" width="${right - left}" height="${bottom - top}" fill="#ffffff" stroke="#cbd5e1"/>
   ${xGrid}
   ${yGrid}

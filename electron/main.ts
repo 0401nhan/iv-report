@@ -3097,7 +3097,7 @@ function createDocxRecordImageSlotsTable(slots: Array<RecordImageSlot | null>) {
           createDocxRecordImageCell(slots[0] ?? null, columnWidth),
           createDocxRecordImageCell(slots[1] ?? null, DOCX_OVERVIEW_BODY_WIDTH_DXA - columnWidth),
         ],
-        { height: 2500 },
+        { height: 3200 },
       ),
     ],
   })
@@ -3125,7 +3125,7 @@ function createDocxRecordImageCell(slot: RecordImageSlot | null, width: number) 
                 },
                 transformation: {
                   width: 360,
-                  height: 210,
+                  height: 270,
                 },
               }),
             ],
@@ -3137,7 +3137,7 @@ function createDocxRecordImageCell(slot: RecordImageSlot | null, width: number) 
 
 function createAnnotatedRecordImageSvg(slot: RecordImageSlot) {
   const width = 720
-  const height = 420
+  const height = 540
   const zoom = typeof slot.zoom === 'number' && Number.isFinite(slot.zoom) ? Math.min(4, Math.max(0.5, slot.zoom)) : 1
   const strokeWidth = normalizeDocxRecordImageStrokeWidth(slot.strokeWidth)
   const imageWidth = width * zoom

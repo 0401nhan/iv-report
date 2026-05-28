@@ -3687,7 +3687,7 @@ function RecordImageSlotEditor({ label, onChange, slot }: RecordImageSlotEditorP
         }}
       />
 
-      <div className="relative grid aspect-[16/9] place-items-center overflow-hidden rounded-md border border-dashed border-slate-300 bg-slate-50">
+      <div className="relative grid aspect-[4/3] place-items-center overflow-hidden rounded-md border border-dashed border-slate-300 bg-slate-50">
         {slot ? (
           <>
             <img

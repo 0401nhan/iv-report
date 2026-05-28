@@ -2822,8 +2822,13 @@ function createDocxSystemReportBlocks(
     blocks.push(createDocxSystemTable(report))
     blocks.push(new Paragraph(''))
     blocks.push(createDocxChartPairTable(record, moduleItem))
-    blocks.push(new Paragraph(''))
-    blocks.push(createDocxRecordImageSlotsTable(getDocxRecordImageSlots(folderPath, record, recordImages)))
+
+    const imageSlots = getDocxRecordImageSlots(folderPath, record, recordImages)
+
+    if (imageSlots.some((slot) => slot !== null)) {
+      blocks.push(new Paragraph(''))
+      blocks.push(createDocxRecordImageSlotsTable(imageSlots))
+    }
   })
 
   return blocks

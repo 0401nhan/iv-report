@@ -2181,8 +2181,6 @@ function createDocxReport({
             alignment: AlignmentType.CENTER,
           }),
           createToleranceCalculationDetailsTable(normalizedToleranceRows),
-          new Paragraph(''),
-          createDocxFormulaReferenceTable(),
         ],
       },
       {
@@ -2226,7 +2224,7 @@ function createDocxProjectInformationBlocks(projectInfo: ProjectInfo, pvModule: 
     createPageBreak(),
     createDocxApplicableStandardsTable(projectInfo),
     createDocxFrontMatterSpacer(180),
-    createDocxTranslationFormulaTable(),
+    createDocxFormulaReferenceTable(),
   ]
 
   return blocks
@@ -3454,21 +3452,6 @@ function createDocxFormulaReferenceTable() {
         ],
         { height: 1320 },
       ),
-    ],
-  })
-}
-
-function createDocxTranslationFormulaTable() {
-  const labelWidth = 2300
-  const formulaWidth = DOCX_BODY_WIDTH_DXA - labelWidth
-
-  return new Table({
-    alignment: AlignmentType.CENTER,
-    borders: createDocxTableBorders(),
-    width: { size: DOCX_BODY_WIDTH_DXA, type: WidthType.DXA },
-    columnWidths: [labelWidth, formulaWidth],
-    layout: TableLayoutType.FIXED,
-    rows: [
       createDocxTableRow(
         [
           createFormulaLabelCell('All are calculated\nusing this formula\nfor translation:', labelWidth),

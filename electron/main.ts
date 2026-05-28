@@ -2851,6 +2851,16 @@ function createDocxSystemTable(report: DocxSystemReportData) {
     text: string,
     options: Parameters<typeof createReportTableCell>[1] = {},
   ) => createReportTableCell(text, { alignment: AlignmentType.CENTER, ...options })
+  const createSystemHeaderCell = (
+    text: string,
+    options: Parameters<typeof createReportTableCell>[1] = {},
+  ) =>
+    createReportTableCell(text, {
+      alignment: AlignmentType.CENTER,
+      margins: { top: 50, bottom: 50, left: 35, right: 35 },
+      size: 16,
+      ...options,
+    })
 
   return new Table({
     alignment: AlignmentType.CENTER,
@@ -2910,18 +2920,18 @@ function createDocxSystemTable(report: DocxSystemReportData) {
       ),
       createDocxTableRow(
         [
-          createSystemTableCell('(W/m^2)', { fill: DOCX_REPORT_COLORS.headerSlate }),
-          createSystemTableCell('(Deg C)', { fill: DOCX_REPORT_COLORS.amber }),
-          createSystemTableCell('Measured\n(Amps)', { fill: DOCX_REPORT_COLORS.yellow }),
-          createSystemTableCell('Translated\nto STC', { fill: DOCX_REPORT_COLORS.yellow }),
-          createSystemTableCell('Nominal\nat STC', { fill: DOCX_REPORT_COLORS.yellow }),
-          createSystemTableCell('Measured\n(Volts)', { fill: DOCX_REPORT_COLORS.green }),
-          createSystemTableCell('Translated\nto STC', { fill: DOCX_REPORT_COLORS.green }),
-          createSystemTableCell('Nominal\nat STC', { fill: DOCX_REPORT_COLORS.green }),
-          createSystemTableCell('Measured\n(Amps)', { fill: DOCX_REPORT_COLORS.headerSlate }),
-          createSystemTableCell('Translated\nto STC', { fill: DOCX_REPORT_COLORS.headerSlate }),
-          createSystemTableCell('Nominal\nat STC', { fill: DOCX_REPORT_COLORS.headerSlate }),
-          createSystemTableCell('%', { fill: DOCX_REPORT_COLORS.headerSlate }),
+          createSystemHeaderCell('(W/m^2)', { fill: DOCX_REPORT_COLORS.headerSlate }),
+          createSystemHeaderCell('(Deg C)', { fill: DOCX_REPORT_COLORS.amber }),
+          createSystemHeaderCell('Meas.\n(Amps)', { fill: DOCX_REPORT_COLORS.yellow }),
+          createSystemHeaderCell('Trans.\nSTC', { fill: DOCX_REPORT_COLORS.yellow }),
+          createSystemHeaderCell('Nom.\nSTC', { fill: DOCX_REPORT_COLORS.yellow }),
+          createSystemHeaderCell('Meas.\n(Volts)', { fill: DOCX_REPORT_COLORS.green }),
+          createSystemHeaderCell('Trans.\nSTC', { fill: DOCX_REPORT_COLORS.green }),
+          createSystemHeaderCell('Nom.\nSTC', { fill: DOCX_REPORT_COLORS.green }),
+          createSystemHeaderCell('Meas.\n(Amps)', { fill: DOCX_REPORT_COLORS.headerSlate }),
+          createSystemHeaderCell('Trans.\nSTC', { fill: DOCX_REPORT_COLORS.headerSlate }),
+          createSystemHeaderCell('Nom.\nSTC', { fill: DOCX_REPORT_COLORS.headerSlate }),
+          createSystemHeaderCell('%', { fill: DOCX_REPORT_COLORS.headerSlate }),
         ],
         { height: 500 },
       ),
@@ -2957,16 +2967,16 @@ function createDocxSystemTable(report: DocxSystemReportData) {
       ),
       createDocxTableRow(
         [
-          createSystemTableCell('Measured\n(Volts)', { fill: DOCX_REPORT_COLORS.orange }),
-          createSystemTableCell('Translated\nto STC', { fill: DOCX_REPORT_COLORS.orange }),
-          createSystemTableCell('Nominal\nat STC', { fill: DOCX_REPORT_COLORS.orange }),
-          createSystemTableCell('%', { fill: DOCX_REPORT_COLORS.orange }),
-          createSystemTableCell('Measured\n(Watts)', { fill: DOCX_REPORT_COLORS.red }),
-          createSystemTableCell('Translated\nto STC', { fill: DOCX_REPORT_COLORS.red }),
-          createSystemTableCell('Nominal\nat STC', { fill: DOCX_REPORT_COLORS.red }),
-          createSystemTableCell('Equipment', { fill: DOCX_REPORT_COLORS.sky }),
-          createSystemTableCell('Equipment + Degradation', { columnSpan: 2, fill: DOCX_REPORT_COLORS.sky }),
-          createSystemTableCell('(%)', { fill: DOCX_REPORT_COLORS.sky }),
+          createSystemHeaderCell('Meas.\n(Volts)', { fill: DOCX_REPORT_COLORS.orange }),
+          createSystemHeaderCell('Trans.\nSTC', { fill: DOCX_REPORT_COLORS.orange }),
+          createSystemHeaderCell('Nom.\nSTC', { fill: DOCX_REPORT_COLORS.orange }),
+          createSystemHeaderCell('%', { fill: DOCX_REPORT_COLORS.orange }),
+          createSystemHeaderCell('Meas.\n(Watts)', { fill: DOCX_REPORT_COLORS.red }),
+          createSystemHeaderCell('Trans.\nSTC', { fill: DOCX_REPORT_COLORS.red }),
+          createSystemHeaderCell('Nom.\nSTC', { fill: DOCX_REPORT_COLORS.red }),
+          createSystemHeaderCell('Equip.', { fill: DOCX_REPORT_COLORS.sky }),
+          createSystemHeaderCell('Equip. +\nDegrad.', { columnSpan: 2, fill: DOCX_REPORT_COLORS.sky }),
+          createSystemHeaderCell('(%)', { fill: DOCX_REPORT_COLORS.sky }),
         ],
         { height: 500 },
       ),
@@ -3651,6 +3661,7 @@ function createReportTableCell(
     color?: string
     columnSpan?: number
     fill?: string
+    margins?: { top: number; bottom: number; left: number; right: number }
     noProof?: boolean
     rowSpan?: number
     size?: number
@@ -3659,7 +3670,7 @@ function createReportTableCell(
 ) {
   return new TableCell({
     borders: createDocxCellBorders(),
-    margins: { top: 80, bottom: 80, left: 80, right: 80 },
+    margins: options.margins ?? { top: 80, bottom: 80, left: 80, right: 80 },
     columnSpan: options.columnSpan,
     rowSpan: options.rowSpan,
     shading: options.fill ? { fill: options.fill } : undefined,
